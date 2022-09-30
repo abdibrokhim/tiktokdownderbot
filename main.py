@@ -21,7 +21,6 @@ from telegram.ext import (
 import os
 import requests
 import logging
-import time
 
 from warnings import filterwarnings
 from telegram.warnings import PTBUserWarning
@@ -35,7 +34,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-TELEGRAM_BOT_TOKEN = ''
+TELEGRAM_BOT_TOKEN = '5538417603:AAGny-20v6DK2bD77wPr5TJv8o1X48T5HZo'
 VIDEO_FILE_PATH = 'video/video.mp4'
 AUDIO_FILE_PATH = 'audio/audio.mp3'
 CHANNEL_LINK = 'https://t.me/prmngr'
@@ -146,17 +145,21 @@ async def tiktok_reel_link_handler(update: Update, context: ContextTypes.DEFAULT
 
     if link != '':
         await update.message.reply_text(text='🔎 Qidirvomman...')
-        url = 'https://tiktok-info.p.rapidapi.com/dl/'
-        querystring = {"link": link}
-        headers = {
-            "X-RapidAPI-Key": 'e0ffcd909emsh1d42846ceac4f36p1278e0jsn4a987af97a26',
-            "X-RapidAPI-Host": 'tiktok-info.p.rapidapi.com'
-        }
-        response = requests.request("GET", url, headers=headers, params=querystring)
-        time.sleep(1)
-        result = response.json()
+        url = "https://tiktok-video-no-watermark2.p.rapidapi.com/"
 
-        link = str(result['videoLinks']['download'])
+        querystring = {"url": link, 'hd': '0'}
+
+        headers = {
+            "X-RapidAPI-Key": "6a90d6d4efmsh32f9758380f3589p11e571jsn642878f330b1",
+            "X-RapidAPI-Host": "tiktok-video-no-watermark2.p.rapidapi.com"
+        }
+
+        response = requests.request("GET", url, headers=headers, params=querystring)
+
+        link = response.json()
+        # print(link)
+        link = link['data']['play']
+        print(link)
 
         try:
             response = requests.get(link)
